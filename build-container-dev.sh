@@ -26,6 +26,18 @@ cd -
 
 containerName=${1:-projector-idea-c}
 downloadUrl=${2:-https://download.jetbrains.com/idea/ideaIC-2019.3.5.tar.gz}
+# JetBrains Runtime URL to replace the x86-64 runtime with other if need be
+aarch64=$2 # 'false' or 'true'
+# jbrUrl=${3:-https://cache-redirector.jetbrains.com/intellij-jbr/jbr-17.0.3-linux-x64-b463.3.tar.gz}
+jbrUrl=$3
+fsnotifierUrl=$4
+
 
 # build container:
-DOCKER_BUILDKIT=1 docker build --progress=plain -t "$containerName" --build-arg buildGradle=false --build-arg "downloadUrl=$downloadUrl" -f Dockerfile ..
+DOCKER_BUILDKIT=1 docker build --progress=plain -t "$containerName" \
+	--build-arg buildGradle=false \
+	--build-arg "downloadUrl=$downloadUrl" \
+	--build-arg "aarch64=$aarch64" \
+	--build-arg "jbrUrl=$jbrUrl" \
+	--build-arg "fsnotifierUrl=$fsnotifierUrl" \
+	-f Dockerfile ..
